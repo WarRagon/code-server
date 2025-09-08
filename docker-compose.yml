@@ -1,0 +1,20 @@
+services:
+  # code-server service definition
+  # (code-server 서비스 정의)
+  # Runs VS Code server as a Docker container for development environment.
+  # (개발 환경을 위한 VS Code 서버를 Docker 컨테이너로 실행합니다.)
+  code-server:
+    image: linuxserver/code-server:latest # Use the latest code-server image (code-server 최신 이미지 사용)
+    container_name: code-server # Specify container name (컨테이너 이름 지정)
+    environment:
+      - PUID=1000 # User ID (Linux user ID) (사용자 ID)
+      - PGID=1000 # Group ID (Linux group ID) (그룹 ID)
+      - TZ=Asia/Seoul # Timezone setting (Seoul) (시간대 설정 (서울))
+      - PASSWORD=your_secure_password # code-server access password (recommended to change to a strong password for actual use) (code-server 접속 비밀번호 (실제 사용 시 강력한 비밀번호로 변경 권장))
+      - DOCKER_MODS=linuxserver/mods:code-server-npm # Add NPM modules (optional, for development convenience) (NPM 모듈 추가 (선택 사항, 개발 편의를 위함))
+    volumes:
+      - ./volumes/code-server/config:/config # Mount code-server configuration files to ./volumes/code-server/config on the host (code-server 설정 파일을 호스트의 ./volumes/code-server/config와 연결)
+      - ./volumes/code-server/projects:/projects # Mount project files to ./volumes/code-server/projects on the host (작업할 프로젝트 파일을 호스트의 ./volumes/code-server/projects와 연결)
+    ports:
+      - 8443:8443 # Map host's 8443 port to container's 8443 port (code-server web UI) (호스트의 8443 포트를 컨테이너의 8443 포트(code-server 웹 UI)와 연결)
+    restart: always # Automatically restart container when Docker Desktop restarts (Docker Desktop 재시작 시 컨테이너 자동 실행)
